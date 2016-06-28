@@ -26,8 +26,18 @@ typedef struct {
   int size;
 } id3v2_frame_header;
 
+typedef struct {
+  char id[20];
+  long start_time;
+  long end_time;
+  long start_offset;
+  long end_offset;
+} chapter_frame;
+
 id3v2_header parse_header(FILE* stream);
 id3v2_frame_header parse_frame_header(FILE* stream);
 void skip_frame(FILE* stream, id3v2_frame_header frame);
+
+chapter_frame parse_chapter(FILE* stream);
 
 #endif

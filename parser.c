@@ -51,11 +51,41 @@ id3v2_frame_header parse_frame_header(FILE* stream) {
   printf("%u %u\n", flags[0], flags[1]);
 
   return header;
-
-  return header;
 }
 
 void skip_frame(FILE* stream, id3v2_frame_header frame) {
   fseek(stream, frame.size, SEEK_CUR);
+}
 
+void swap(char *a, char *b) {
+  char temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+chapter_frame parse_chapter(FILE* stream) {
+  chapter_frame frame;
+  for(int i=0; i<20; ++i) {
+    fread((frame.id + i), 1, 1, stream);
+    if (frame.id[i] == 0) {
+      printf("broke at %i\n", i);
+      break;
+    }
+  }
+  unsigned char time[4];
+  fread(time, 4, 1, stream);
+  frame.start_time = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+
+  fread(time, 4, 1, stream);
+  frame.end_time = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+
+
+  fread(time, 4, 1, stream);
+  frame.start_offset = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+
+  fread(time, 4, 1, stream);
+  frame.end_offset = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+
+  printf("%li-%li\n", frame.start_time, frame.end_time);
+  return frame;
 }
