@@ -116,16 +116,16 @@ chapter_frame parse_chapter(FILE* stream) {
   }
   unsigned char time[4];
   fread(time, 4, 1, stream);
-  frame.start_time = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+  frame.start_time = time[3] + time[2]*128*2 + time[1]*128*128*4 + time[0]*128*128*8;
 
   fread(time, 4, 1, stream);
-  frame.end_time = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+  frame.end_time = time[3] + time[2]*128*2 + time[1]*128*128*4 + time[0]*128*128*8;
 
 
   fread(time, 4, 1, stream);
-  frame.start_offset = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+  frame.start_offset = time[3] + time[2]*128*2 + time[1]*128*128*4 + time[0]*128*128*8;
 
   fread(time, 4, 1, stream);
-  frame.end_offset = time[3] + time[2]*128 + time[1]*128*128 + time[0]*128*128;
+  frame.end_offset = time[3] + time[2]*128*2 + time[1]*128*128*4 + time[0]*128*128*8;
   return frame;
 }
